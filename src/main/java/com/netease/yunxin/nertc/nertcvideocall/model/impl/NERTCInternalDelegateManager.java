@@ -1,13 +1,12 @@
 package com.netease.yunxin.nertc.nertcvideocall.model.impl;
 
-import com.netease.lava.nertc.sdk.stats.NERtcNetworkQualityInfo;
 import com.netease.nimlib.sdk.avsignalling.constant.ChannelType;
 import com.netease.nimlib.sdk.avsignalling.event.InvitedEvent;
+import com.netease.nimlib.sdk.util.Entry;
 import com.netease.yunxin.nertc.nertcvideocall.model.NERTCCallingDelegate;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -62,11 +61,11 @@ public class NERTCInternalDelegateManager implements NERTCCallingDelegate {
 
 
     @Override
-    public void onUserEnter(long uid,String accId) {
+    public void onUserEnter(String accId) {
         for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
             NERTCCallingDelegate listener = reference.get();
             if (listener != null) {
-                listener.onUserEnter(uid,accId);
+                listener.onUserEnter(accId);
             }
         }
     }
@@ -103,11 +102,11 @@ public class NERTCInternalDelegateManager implements NERTCCallingDelegate {
     }
 
     @Override
-    public void onRejectByUserId(String userId) {
+    public void onUserReject(String userId) {
         for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
             NERTCCallingDelegate listener = reference.get();
             if (listener != null) {
-                listener.onRejectByUserId(userId);
+                listener.onUserReject(userId);
             }
         }
     }
@@ -123,17 +122,17 @@ public class NERTCInternalDelegateManager implements NERTCCallingDelegate {
     }
 
     @Override
-    public void onCancelByUserId(String userId) {
+    public void onUserCancel(String userId) {
         for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
             NERTCCallingDelegate listener = reference.get();
             if (listener != null) {
-                listener.onCancelByUserId(userId);
+                listener.onUserCancel(userId);
             }
         }
     }
 
     @Override
-    public void onCameraAvailable(long userId, boolean isVideoAvailable) {
+    public void onCameraAvailable(String userId, boolean isVideoAvailable) {
         for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
             NERTCCallingDelegate listener = reference.get();
             if (listener != null) {
@@ -143,7 +142,7 @@ public class NERTCInternalDelegateManager implements NERTCCallingDelegate {
     }
 
     @Override
-    public void onAudioAvailable(long userId, boolean isVideoAvailable) {
+    public void onAudioAvailable(String userId, boolean isVideoAvailable) {
         for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
             NERTCCallingDelegate listener = reference.get();
             if (listener != null) {
@@ -153,7 +152,47 @@ public class NERTCInternalDelegateManager implements NERTCCallingDelegate {
     }
 
     @Override
-    public void onUserNetworkQuality(NERtcNetworkQualityInfo[] stats) {
+    public void onDisconnect(int res) {
+        for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
+            NERTCCallingDelegate listener = reference.get();
+            if (listener != null) {
+                listener.onDisconnect(res);
+            }
+        }
+    }
+
+    @Override
+    public void onUserAccept(String userId) {
+        for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
+            NERTCCallingDelegate listener = reference.get();
+            if (listener != null) {
+                listener.onUserAccept(userId);
+            }
+        }
+    }
+
+    @Override
+    public void onOtherClientAccept() {
+        for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
+            NERTCCallingDelegate listener = reference.get();
+            if (listener != null) {
+                listener.onOtherClientAccept();
+            }
+        }
+    }
+
+    @Override
+    public void onOtherClientReject() {
+        for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
+            NERTCCallingDelegate listener = reference.get();
+            if (listener != null) {
+                listener.onOtherClientReject();
+            }
+        }
+    }
+
+    @Override
+    public void onUserNetworkQuality(Entry<String, Integer>[] stats) {
         for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
             NERTCCallingDelegate listener = reference.get();
             if (listener != null) {
@@ -173,11 +212,11 @@ public class NERTCInternalDelegateManager implements NERTCCallingDelegate {
     }
 
     @Override
-    public void timeOut() {
+    public void onCallingTimeOut() {
         for (WeakReference<NERTCCallingDelegate> reference : mWeakReferenceList) {
             NERTCCallingDelegate listener = reference.get();
             if (listener != null) {
-                listener.timeOut();
+                listener.onCallingTimeOut();
             }
         }
     }

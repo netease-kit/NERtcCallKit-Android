@@ -32,6 +32,19 @@
 
 ### 集成方式
 
+* Maven集成
+
+> implementation 'com.netease.yunxin.kit:call:1.1.0'
+```groovy
+allprojects {
+    repositories {
+        //...
+        mavenCentral()
+       //...
+    }
+}
+```
+
 * 手动集成
 
 > clone 工程代码，以library的形式导入app项目
